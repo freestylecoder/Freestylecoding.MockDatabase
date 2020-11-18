@@ -7,6 +7,12 @@ using System.Reflection;
 
 namespace Freestylecoding.MockDatabase {
 	public class MockConnection : DbConnection {
+		public MockConnection() : this( string.Empty ) { }
+
+		public MockConnection( string connectionString ) : base() {
+			this.ConnectionString = connectionString;
+		}
+
 		#region DbConnection Stuff
 		public override string ConnectionString { get; set; }
 

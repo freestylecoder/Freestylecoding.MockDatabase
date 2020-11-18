@@ -7,6 +7,10 @@ namespace Freestylecoding.MockDatabase {
 		internal MockCommand( MockConnection connection ) : base() {
 			this.DbConnection = connection;
 			this.MockConnection = connection;
+
+			this.CommandText = string.Empty;
+			this.CommandType = CommandType.Text;
+			this.DesignTimeVisible = true;
 		}
 
 		internal MockConnection MockConnection { get; private set; }

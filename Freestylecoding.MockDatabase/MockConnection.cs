@@ -54,6 +54,10 @@ namespace Freestylecoding.MockDatabase {
 		public void AddResult( DataTable table ) =>
 			Results.Enqueue( table );
 
+		/// <remarks>
+		/// This is equivalent to calling AddResult( null );
+		/// It is just more expressing in the test code.
+		/// </remarks>
 		public void AddEmptyResult() =>
 			Results.Enqueue( new DataTable( "Empty" ) );
 
@@ -76,14 +80,14 @@ namespace Freestylecoding.MockDatabase {
 			);
 
 		public void AddJsonResult( string json ) {
-			List<string> chucks = new List<string>();
-			while( string.IsNullOrWhiteSpace( json ) ) {
-				chucks.Add( json.Substring( 0, Math.Min( json.Length, 2000 ) ) );
+			List<string> chunks = new List<string>();
+			while( !string.IsNullOrWhiteSpace( json ) ) {
+				chunks.Add( json.Substring( 0, Math.Min( json.Length, 2000 ) ) );
 				json = json.Substring( Math.Min( json.Length, 2000 ) );
 			}
 			AddResult(
 				CreateDataTable(
-					chucks,
+					chunks,
 					new[] { new DataColumn( "Json", typeof( string ) ) },
 					( s ) => new object[] { s }
 				)

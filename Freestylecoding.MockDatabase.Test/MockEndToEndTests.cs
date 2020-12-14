@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace Freestylecoding.MockDatabase.Test {
@@ -378,6 +378,78 @@ namespace Freestylecoding.MockDatabase.Test {
 
 			Assert.False( reader.Read() );
 			Assert.False( reader.NextResult() );
+		}
+		#endregion
+
+		#region void AddSqlException()
+		[Fact]
+		public void AddSqlException() {
+			MockConnection connection = new MockConnection();
+			connection.AddSqlException();
+
+			DbCommand command = connection.CreateCommand();
+			Assert.IsType<SqlException>(
+				Record.Exception( () =>
+					command.ExecuteNonQuery()
+				)
+			);
+		}
+
+		[Fact]
+		public void AddSqlException_Parameters() {
+			Guid conId = Guid.NewGuid();
+			const string message = "Test Message";
+			Exception expectedEx = new Exception();
+
+			MockConnection connection = new MockConnection();
+			connection.AddSqlException(
+				message,
+				null,
+				expectedEx,
+				conId
+			);
+
+			DbCommand command = connection.CreateCommand();
+			
+			Exception actual = Record.Exception( () => command.ExecuteNonQuery() );
+			Assert.IsType<SqlException>( actual );
+
+			SqlException ex = actual as SqlException;
+			Assert.Equal( message, ex.Message );
+			Assert.Empty( ex.Errors );
+			Assert.Equal( expectedEx, ex.InnerException );
+			Assert.Equal( conId, ex.ClientConnectionId );
+		}
+
+		[Fact]
+		public void AddSqlException_InChain() {
+			MockConnection connection = new MockConnection();
+			connection.AddNonQueryResult( 42 );
+			connection.AddSqlException();
+
+			DbCommand command = connection.CreateCommand();
+			Assert.Equal( 42, command.ExecuteNonQuery() );
+			Assert.IsType<SqlException>(
+				Record.Exception( () =>
+					command.ExecuteNonQuery()
+				)
+			);
+		}
+
+
+		[Fact]
+		public void AddSqlException_NextResult() {
+			MockConnection connection = new MockConnection();
+			connection.AddResult( null );
+			connection.AddSqlException();
+
+			DbCommand command = connection.CreateCommand();
+			DbDataReader reader = command.ExecuteReader();
+			Assert.IsType<SqlException>(
+				Record.Exception( () =>
+					reader.NextResult()
+				)
+			);
 		}
 		#endregion
 

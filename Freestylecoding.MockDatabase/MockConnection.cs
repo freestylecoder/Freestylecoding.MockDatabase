@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 
@@ -93,6 +94,21 @@ namespace Freestylecoding.MockDatabase {
 				)
 			);
 		}
+
+		public void AddSqlException(
+			string message = null,
+			SqlError[] errorCollection = null,
+			Exception innerException = null,
+			Guid conId = default
+		) =>
+			this.Results.Enqueue(
+				new SqlExceptionDataTable(
+					message,
+					errorCollection,
+					innerException,
+					conId
+				)
+			);
 
 		public DataTable CreateDataTable<T>(
 			IEnumerable<T> data,

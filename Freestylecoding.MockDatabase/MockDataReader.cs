@@ -10,6 +10,9 @@ namespace Freestylecoding.MockDatabase {
 		private readonly MockCommand Command;
 
 		internal MockDataReader( MockCommand command, DataTable dataTable ) {
+			if( dataTable is SqlExceptionDataTable ex )
+				ex.Throw();
+
 			this.Command = command;
 			this.ActiveReader = ( dataTable ?? new DataTable() ).CreateDataReader();
 		}
@@ -76,7 +79,11 @@ namespace Freestylecoding.MockDatabase {
 
 		public override bool NextResult() {
 			if( Command.MockConnection.Results.Any() ) {
-				ActiveReader = Command.MockConnection.Results.Dequeue().CreateDataReader();
+				DataTable dataTable = Command.MockConnection.Results.Dequeue();
+				if( dataTable is SqlExceptionDataTable ex )
+					ex.Throw();
+
+				this.ActiveReader = dataTable.CreateDataReader();
 				return true;
 			} else {
 				ActiveReader = null;

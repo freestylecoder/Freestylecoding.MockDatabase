@@ -13,7 +13,7 @@ namespace Freestylecoding.MockDatabase.Test {
 			Assert.Null( actual.Container );
 			Assert.Empty( actual.Database );
 			Assert.Empty( actual.DataSource );
-			Assert.Equal( "1.0.0.0", actual.ServerVersion );
+			Assert.Equal( "0.9.0.0", actual.ServerVersion );
 			Assert.Null( actual.Site );
 			Assert.Equal( ConnectionState.Closed, actual.State );
 		}
@@ -28,7 +28,7 @@ namespace Freestylecoding.MockDatabase.Test {
 			Assert.Null( actual.Container );
 			Assert.Empty( actual.Database );
 			Assert.Empty( actual.DataSource );
-			Assert.Equal( "1.0.0.0", actual.ServerVersion );
+			Assert.Equal( "0.9.0.0", actual.ServerVersion );
 			Assert.Null( actual.Site );
 			Assert.Equal( ConnectionState.Closed, actual.State );
 		}

@@ -2,14 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>0.9.0</Version>
+    <Authors>Chris Gardner</Authors>
+    <Description>Implementation of MockableDatabase the uses System.Data.SqlClient</Description>
+    <Copyright>2020</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/freestylecoder/Freestylecoding.MockDatabase</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/freestylecoder/Freestylecoding.MockDatabase/tree/main/Freestylecoding.MockableSqlDatabase</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>SqlDatabase</PackageTags>
+    <PackageReleaseNotes>Alpha Release</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Freestylecoding.MockableDatabase" Version="0.9.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Freestylecoding.MockableDatabase\Freestylecoding.MockableDatabase.csproj" />
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

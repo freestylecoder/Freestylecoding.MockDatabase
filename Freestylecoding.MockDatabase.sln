@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Freestylecoding.MockDatabase", "Freestylecoding.MockDatabase\Freestylecoding.MockDatabase.csproj", "{690456DA-11C6-4C63-A599-F586DFC0C038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freestylecoding.MockDatabase.Test", "Freestylecoding.MockDatabase.Test\Freestylecoding.MockDatabase.Test.csproj", "{D3ABCE81-B19E-4917-8BF9-2A3C67B22412}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Freestylecoding.MockDatabase.Test", "Freestylecoding.MockDatabase.Test\Freestylecoding.MockDatabase.Test.csproj", "{D3ABCE81-B19E-4917-8BF9-2A3C67B22412}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freestylecoding.MockableDatabase", "Freestylecoding.MockableDatabase\Freestylecoding.MockableDatabase.csproj", "{9651BC0D-0E3D-41BD-95E5-CB3E655F20DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freestylecoding.MockableSqlDatabase", "Freestylecoding.MockableSqlDatabase\Freestylecoding.MockableSqlDatabase.csproj", "{794667A3-6B80-4185-B3A1-DA928054FB23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freestylecoding.MockableDatabase.Tests", "Freestylecoding.MockableDatabase.Tests\Freestylecoding.MockableDatabase.Tests.csproj", "{085C7E04-6E68-4E82-B0A6-C2170EFF35AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{D3ABCE81-B19E-4917-8BF9-2A3C67B22412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3ABCE81-B19E-4917-8BF9-2A3C67B22412}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3ABCE81-B19E-4917-8BF9-2A3C67B22412}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9651BC0D-0E3D-41BD-95E5-CB3E655F20DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9651BC0D-0E3D-41BD-95E5-CB3E655F20DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9651BC0D-0E3D-41BD-95E5-CB3E655F20DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9651BC0D-0E3D-41BD-95E5-CB3E655F20DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{794667A3-6B80-4185-B3A1-DA928054FB23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{794667A3-6B80-4185-B3A1-DA928054FB23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{794667A3-6B80-4185-B3A1-DA928054FB23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{794667A3-6B80-4185-B3A1-DA928054FB23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{085C7E04-6E68-4E82-B0A6-C2170EFF35AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{085C7E04-6E68-4E82-B0A6-C2170EFF35AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{085C7E04-6E68-4E82-B0A6-C2170EFF35AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{085C7E04-6E68-4E82-B0A6-C2170EFF35AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

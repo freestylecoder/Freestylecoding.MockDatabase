@@ -4,10 +4,12 @@ using Xunit;
 namespace Freestylecoding.MockDatabase.Test {
 	public class MockCommandTests {
 		private readonly MockConnection Connection;
+		private readonly MockDatabase Database;
 		private readonly MockCommand Command;
 
 		public MockCommandTests() {
-			this.Connection = new MockConnection();
+			this.Database = new MockDatabase();
+			this.Connection = new MockConnection( Database );
 			this.Command = Connection.CreateCommand() as MockCommand;
 		}
 

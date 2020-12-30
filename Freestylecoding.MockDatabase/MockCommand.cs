@@ -29,8 +29,8 @@ namespace Freestylecoding.MockDatabase {
 
 		public override void Cancel() { return; }
 		public override int ExecuteNonQuery() {
-			if( MockConnection.Results.Any() ) {
-				MockDataReader r = new MockDataReader( this, MockConnection.Results.Dequeue() );
+			if( MockConnection.ParentDatabase.Results.Any() ) {
+				MockDataReader r = new MockDataReader( this, MockConnection.ParentDatabase.Results.Dequeue() );
 				if( !r.Read() )	return 0;
 				return r.GetInt32( 0 );
 			}
@@ -38,8 +38,8 @@ namespace Freestylecoding.MockDatabase {
 			return 0;
 		}
 		public override object ExecuteScalar() {
-			if( MockConnection.Results.Any() ) {
-				MockDataReader r = new MockDataReader( this, MockConnection.Results.Dequeue() );
+			if( MockConnection.ParentDatabase.Results.Any() ) {
+				MockDataReader r = new MockDataReader( this, MockConnection.ParentDatabase.Results.Dequeue() );
 				if( !r.Read() )	return null;
 				return r.GetValue( 0 );
 			}
@@ -50,6 +50,6 @@ namespace Freestylecoding.MockDatabase {
 		protected override DbParameter CreateDbParameter() =>
 			new MockParameter();
 		protected override DbDataReader ExecuteDbDataReader( CommandBehavior behavior ) =>
-			new MockDataReader( this, MockConnection.Results.Dequeue() );
+			new MockDataReader( this, MockConnection.ParentDatabase.Results.Dequeue() );
 	}
 }

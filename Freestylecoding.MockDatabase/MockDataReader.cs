@@ -78,8 +78,8 @@ namespace Freestylecoding.MockDatabase {
 			ActiveReader.IsDBNull( ordinal );
 
 		public override bool NextResult() {
-			if( Command.MockConnection.Results.Any() ) {
-				DataTable dataTable = Command.MockConnection.Results.Dequeue();
+			if( Command.MockConnection.ParentDatabase.Results.Any() ) {
+				DataTable dataTable = Command.MockConnection.ParentDatabase.Results.Dequeue();
 				if( dataTable is SqlExceptionDataTable ex )
 					ex.Throw();
 

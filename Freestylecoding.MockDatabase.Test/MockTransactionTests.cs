@@ -5,11 +5,13 @@ using Xunit;
 
 namespace Freestylecoding.MockDatabase.Test {
 	public class MockTransactionTests {
+		private readonly MockDatabase Database;
 		private readonly MockConnection Connection;
 		private readonly MockTransaction Transaction;
 
 		public MockTransactionTests() {
-			this.Connection = new MockConnection();
+			this.Database = new MockDatabase();
+			this.Connection = new MockConnection( Database );
 			this.Transaction = Connection.BeginTransaction() as MockTransaction;
 		}
 

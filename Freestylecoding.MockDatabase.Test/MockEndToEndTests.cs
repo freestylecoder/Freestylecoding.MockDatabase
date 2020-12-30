@@ -27,9 +27,10 @@ namespace Freestylecoding.MockDatabase.Test {
 					data.Rows.Add( row );
 				} );
 
-			MockConnection connection = new MockConnection();
-			connection.AddResult( data );
+			MockDatabase database = new MockDatabase();
+			database.AddResult( data );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -45,9 +46,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddResult_Null() {
-			MockConnection connection = new MockConnection();
-			connection.AddResult( null );
+			MockDatabase database = new MockDatabase();
+			database.AddResult( null );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -57,43 +59,45 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddResult_Multiple() {
-			Func<MockConnection,int,DataTable> CreateSimpleDataReader = ( MockConnection c, int value ) =>
-				c.CreateDataTable(
+			Func<MockDatabase,int,DataTable> CreateSimpleDataReader = ( MockDatabase d, int value ) =>
+				d.CreateDataTable(
 					new[] { value },
 					new[] { new DataColumn( "Column0", typeof( int ) ) },
 					i => new object[] { i }
 				);
 
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
+			DbConnection connection = database.GetConnection();
 
-			DataTable dt1 = CreateSimpleDataReader( connection, 1 );
-			DataTable dt2 = CreateSimpleDataReader( connection, 2 );
-			DataTable dt3 = CreateSimpleDataReader( connection, 3 );
+			DataTable dt1 = CreateSimpleDataReader( database, 1 );
+			DataTable dt2 = CreateSimpleDataReader( database, 2 );
+			DataTable dt3 = CreateSimpleDataReader( database, 3 );
 
-			connection.AddResult( dt1 );
-			connection.AddResult( dt2 );
-			connection.AddResult( dt3 );
+			database.AddResult( dt1 );
+			database.AddResult( dt2 );
+			database.AddResult( dt3 );
 
-			Assert.Equal( 3, GetResults( connection ).Count() );
-			AssertEqual( dt1, GetResults( connection ).Dequeue() );
-			AssertEqual( dt2, GetResults( connection ).Dequeue() );
-			AssertEqual( dt3, GetResults( connection ).Dequeue() );
+			Assert.Equal( 3, GetResults( database ).Count() );
+			AssertEqual( dt1, GetResults( database ).Dequeue() );
+			AssertEqual( dt2, GetResults( database ).Dequeue() );
+			AssertEqual( dt3, GetResults( database ).Dequeue() );
 		}
 
-		private Queue<DataTable> GetResults( MockConnection connection ) =>
-			connection
+		private Queue<DataTable> GetResults( MockDatabase database ) =>
+			database
 				?.GetType()
 				?.GetField( "Results", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic )
-				?.GetValue( connection )
+				?.GetValue( database )
 				as Queue<DataTable>;
 		#endregion
 
 		#region void AddEmptyResult()
 		[Fact]
 		public void AddEmptyResult_Single_Reader() {
-			MockConnection connection = new MockConnection();
-			connection.AddEmptyResult();
+			MockDatabase database = new MockDatabase();
+			database.AddEmptyResult();
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -103,10 +107,11 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddEmptyResult_Multiple_Reader() {
-			MockConnection connection = new MockConnection();
-			connection.AddEmptyResult();
-			connection.AddEmptyResult();
+			MockDatabase database = new MockDatabase();
+			database.AddEmptyResult();
+			database.AddEmptyResult();
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -119,9 +124,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddEmptyResult_Single_Scalar() {
-			MockConnection connection = new MockConnection();
-			connection.AddEmptyResult();
+			MockDatabase database = new MockDatabase();
+			database.AddEmptyResult();
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			object actual = command.ExecuteScalar();
 
@@ -130,9 +136,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddEmptyResult_Single_NonQuery() {
-			MockConnection connection = new MockConnection();
-			connection.AddEmptyResult();
+			MockDatabase database = new MockDatabase();
+			database.AddEmptyResult();
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			int actual = command.ExecuteNonQuery();
 
@@ -143,9 +150,10 @@ namespace Freestylecoding.MockDatabase.Test {
 		#region void AddNonQueryResult()
 		[Fact]
 		public void AddNonQueryResult_Single_Reader() {
-			MockConnection connection = new MockConnection();
-			connection.AddNonQueryResult( 42 );
+			MockDatabase database = new MockDatabase();
+			database.AddNonQueryResult( 42 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -160,10 +168,11 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddNonQueryResult_Multiple_Reader() {
-			MockConnection connection = new MockConnection();
-			connection.AddNonQueryResult( 42 );
-			connection.AddNonQueryResult( 24 );
+			MockDatabase database = new MockDatabase();
+			database.AddNonQueryResult( 42 );
+			database.AddNonQueryResult( 24 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -186,9 +195,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddNonQueryResult_Single_Scalar() {
-			MockConnection connection = new MockConnection();
-			connection.AddNonQueryResult( 42 );
+			MockDatabase database = new MockDatabase();
+			database.AddNonQueryResult( 42 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			object actual = command.ExecuteScalar();
 
@@ -197,9 +207,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddNonQueryResult_Single_NonQuery() {
-			MockConnection connection = new MockConnection();
-			connection.AddNonQueryResult( 42 );
+			MockDatabase database = new MockDatabase();
+			database.AddNonQueryResult( 42 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			int actual = command.ExecuteNonQuery();
 
@@ -210,9 +221,10 @@ namespace Freestylecoding.MockDatabase.Test {
 		#region void AddScalarResult( object o )
 		[Fact]
 		public void AddScalarResult_Single_Reader() {
-			MockConnection connection = new MockConnection();
-			connection.AddScalarResult( 42 );
+			MockDatabase database = new MockDatabase();
+			database.AddScalarResult( 42 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -227,10 +239,11 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddScalarResult_Multiple_Reader() {
-			MockConnection connection = new MockConnection();
-			connection.AddScalarResult( 42 );
-			connection.AddScalarResult( 24 );
+			MockDatabase database = new MockDatabase();
+			database.AddScalarResult( 42 );
+			database.AddScalarResult( 24 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -253,9 +266,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddScalarResult_Single_Scalar() {
-			MockConnection connection = new MockConnection();
-			connection.AddScalarResult( 42 );
+			MockDatabase database = new MockDatabase();
+			database.AddScalarResult( 42 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			object actual = command.ExecuteScalar();
 
@@ -264,9 +278,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddScalarResult_Single_NonQuery() {
-			MockConnection connection = new MockConnection();
-			connection.AddScalarResult( 42 );
+			MockDatabase database = new MockDatabase();
+			database.AddScalarResult( 42 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			int actual = command.ExecuteNonQuery();
 
@@ -284,9 +299,10 @@ namespace Freestylecoding.MockDatabase.Test {
 		[InlineData( true, typeof( bool ) )]
 		[InlineData( "string", typeof( string ) )]
 		public void AddScalarResult_TypeCheck( object value, Type type ) {
-			MockConnection connection = new MockConnection();
-			connection.AddScalarResult( value );
+			MockDatabase database = new MockDatabase();
+			database.AddScalarResult( value );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			object actual = command.ExecuteScalar();
 
@@ -302,9 +318,10 @@ namespace Freestylecoding.MockDatabase.Test {
 			string chunk2 = new string( '2', 2000 );
 			string chunk3 = new string( '3', 1000 );
 
-			MockConnection connection = new MockConnection();
-			connection.AddJsonResult( $"{chunk1}{chunk2}{chunk3}" );
+			MockDatabase database = new MockDatabase();
+			database.AddJsonResult( $"{chunk1}{chunk2}{chunk3}" );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -325,9 +342,10 @@ namespace Freestylecoding.MockDatabase.Test {
 		public void AddJsonResult_Small() {
 			string chunk1 = new string( '1', 1000 );
 
-			MockConnection connection = new MockConnection();
-			connection.AddJsonResult( chunk1 );
+			MockDatabase database = new MockDatabase();
+			database.AddJsonResult( chunk1 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -342,9 +360,10 @@ namespace Freestylecoding.MockDatabase.Test {
 		public void AddJsonResult_Scalar() {
 			string chunk1 = new string( '1', 1000 );
 
-			MockConnection connection = new MockConnection();
-			connection.AddJsonResult( chunk1 );
+			MockDatabase database = new MockDatabase();
+			database.AddJsonResult( chunk1 );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			object actual = command.ExecuteScalar();
 
@@ -355,9 +374,10 @@ namespace Freestylecoding.MockDatabase.Test {
 		public void AddJsonResult_Scalar_Large() {
 			string chunk1 = new string( '1', 2000 );
 
-			MockConnection connection = new MockConnection();
-			connection.AddJsonResult( $"{chunk1}{new string( '2', 2000 )}{new string( '3', 1000 )}" );
+			MockDatabase database = new MockDatabase();
+			database.AddJsonResult( $"{chunk1}{new string( '2', 2000 )}{new string( '3', 1000 )}" );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			object actual = command.ExecuteScalar();
 
@@ -370,9 +390,10 @@ namespace Freestylecoding.MockDatabase.Test {
 		[InlineData( "\t" )]
 		[InlineData( null )]
 		public void AddJsonResult_IsNullOrWhitespace( string value ) {
-			MockConnection connection = new MockConnection();
-			connection.AddJsonResult( value );
+			MockDatabase database = new MockDatabase();
+			database.AddJsonResult( value );
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 
@@ -384,9 +405,10 @@ namespace Freestylecoding.MockDatabase.Test {
 		#region void AddSqlException()
 		[Fact]
 		public void AddSqlException() {
-			MockConnection connection = new MockConnection();
-			connection.AddSqlException();
+			MockDatabase database = new MockDatabase();
+			database.AddSqlException();
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			Assert.IsType<SqlException>(
 				Record.Exception( () =>
@@ -401,16 +423,17 @@ namespace Freestylecoding.MockDatabase.Test {
 			const string message = "Test Message";
 			Exception expectedEx = new Exception();
 
-			MockConnection connection = new MockConnection();
-			connection.AddSqlException(
+			MockDatabase database = new MockDatabase();
+			database.AddSqlException(
 				message,
 				null,
 				expectedEx,
 				conId
 			);
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
-			
+
 			Exception actual = Record.Exception( () => command.ExecuteNonQuery() );
 			Assert.IsType<SqlException>( actual );
 
@@ -423,10 +446,11 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void AddSqlException_InChain() {
-			MockConnection connection = new MockConnection();
-			connection.AddNonQueryResult( 42 );
-			connection.AddSqlException();
+			MockDatabase database = new MockDatabase();
+			database.AddNonQueryResult( 42 );
+			database.AddSqlException();
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			Assert.Equal( 42, command.ExecuteNonQuery() );
 			Assert.IsType<SqlException>(
@@ -436,13 +460,13 @@ namespace Freestylecoding.MockDatabase.Test {
 			);
 		}
 
-
 		[Fact]
 		public void AddSqlException_NextResult() {
-			MockConnection connection = new MockConnection();
-			connection.AddResult( null );
-			connection.AddSqlException();
+			MockDatabase database = new MockDatabase();
+			database.AddResult( null );
+			database.AddSqlException();
 
+			DbConnection connection = database.GetConnection();
 			DbCommand command = connection.CreateCommand();
 			DbDataReader reader = command.ExecuteReader();
 			Assert.IsType<SqlException>(
@@ -472,8 +496,8 @@ namespace Freestylecoding.MockDatabase.Test {
 					data.Rows.Add( row );
 				} );
 
-			MockConnection connection = new MockConnection();
-			DataTable actual = connection.CreateDataTable(
+			MockDatabase database = new MockDatabase();
+			DataTable actual = database.CreateDataTable(
 				Enumerable.Range( 1, 5 ),
 				new[] {
 					new DataColumn( "Column0", typeof( int ) ),
@@ -494,8 +518,8 @@ namespace Freestylecoding.MockDatabase.Test {
 				new DataColumn( "Column1", typeof( string ) )
 			} );
 
-			MockConnection connection = new MockConnection();
-			DataTable actual = connection.CreateDataTable(
+			MockDatabase database = new MockDatabase();
+			DataTable actual = database.CreateDataTable(
 				Enumerable.Empty<int>(),
 				new[] {
 					new DataColumn( "Column0", typeof( int ) ),
@@ -509,10 +533,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_NoColumns() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<ArgumentException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						Enumerable.Range( 1, 5 ),
 						Enumerable.Empty<DataColumn>(),
 						i => new object[] { i, i.ToString() }
@@ -523,10 +547,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_TooFewColumns() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<ArgumentException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						Enumerable.Range( 1, 5 ),
 						new[] {
 							new DataColumn( "Column0", typeof( int ) )
@@ -539,10 +563,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_TooManyColumns_NotNullable() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<NoNullAllowedException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						Enumerable.Range( 1, 5 ),
 						new[] {
 							new DataColumn( "Column0", typeof( int ) ),
@@ -575,8 +599,8 @@ namespace Freestylecoding.MockDatabase.Test {
 					data.Rows.Add( row );
 				} );
 
-			MockConnection connection = new MockConnection();
-			DataTable actual = connection.CreateDataTable(
+			MockDatabase database = new MockDatabase();
+			DataTable actual = database.CreateDataTable(
 				Enumerable.Range( 1, 5 ),
 				new[] {
 					new DataColumn( "Column0", typeof( int ) ),
@@ -591,10 +615,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_WrongType() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<ArgumentException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						Enumerable.Range( 1, 5 ),
 						new[] {
 							new DataColumn( "Column0", typeof( Guid ) ),
@@ -608,10 +632,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_ValueTooBig() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<ArgumentException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						Enumerable.Range( 1, 5 ),
 						new[] {
 							new DataColumn( "Column0", typeof( int ) ),
@@ -625,10 +649,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_NullList() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<NullReferenceException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						(IEnumerable<int>)null,
 						new[] {
 							new DataColumn( "Column0", typeof( int ) ),
@@ -642,10 +666,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_NullColumns() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<ArgumentNullException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						Enumerable.Range( 1, 5 ),
 						null,
 						i => new object[] { i, new string( '1', i ) }
@@ -656,10 +680,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_NullFunc() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<NullReferenceException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						Enumerable.Range( 1, 5 ),
 						new[] {
 							new DataColumn( "Column0", typeof( int ) ),
@@ -673,10 +697,10 @@ namespace Freestylecoding.MockDatabase.Test {
 
 		[Fact]
 		public void CreateDataTable_FuncReturnsNull() {
-			MockConnection connection = new MockConnection();
+			MockDatabase database = new MockDatabase();
 			Assert.IsType<ArgumentNullException>(
 				Record.Exception( () =>
-					connection.CreateDataTable(
+					database.CreateDataTable(
 						Enumerable.Range( 1, 5 ),
 						new[] {
 							new DataColumn( "Column0", typeof( int ) ),

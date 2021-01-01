@@ -13,13 +13,13 @@
     <PackageReleaseNotes>Alpha release.</PackageReleaseNotes>
     <AssemblyVersion>0.9.0.0</AssemblyVersion>
     <FileVersion>0.9.0.0</FileVersion>
-    <Version>0.9.0</Version>
+    <Version>0.9.1</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Freestylecoding.MockableDatabase" Version="0.9.0" />
+    <PackageReference Include="Freestylecoding.MockableDatabase" Version="0.9.1" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>

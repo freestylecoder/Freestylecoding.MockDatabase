@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.9.1</Version>
+    <Version>0.9.2</Version>
     <Authors>Chris Gardner</Authors>
     <Description>Implementation of MockableDatabase the uses System.Data.SqlClient</Description>
     <Copyright>2020</Copyright>

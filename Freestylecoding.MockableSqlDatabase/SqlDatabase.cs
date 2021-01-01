@@ -28,6 +28,6 @@ namespace Freestylecoding.MockableSqlDatabase {
 				Size = size
 			};
 
-		private readonly string ConnectionString;
+		protected readonly string ConnectionString;
 	}
 }
